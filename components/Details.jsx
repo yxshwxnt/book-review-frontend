@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BookDetails = ({ book }) => {
+const Details = ({ book }) => {
   return (
     <div>
       <p className='text-3xl text-red-400'>Inside Book Details</p>
@@ -8,4 +8,4 @@ const BookDetails = ({ book }) => {
   );
 };
 
-export default BookDetails;
+export default Details;

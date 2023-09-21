@@ -11,7 +11,7 @@ import {
 
 export default function App() {
   return (
-    <Navbar>
+    <Navbar color={'danger'}>
       <NavbarBrand>
         <p className="font-bold text-inherit">this.Book</p>
       </NavbarBrand>

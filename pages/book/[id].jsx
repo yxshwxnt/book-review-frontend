@@ -2,11 +2,11 @@ import React from "react";
 import { useRouter } from "next/router";
 import { Image, Text, Button, Spacer } from "@nextui-org/react";
 import Link from "next/link";
+import Header from "@/components/Header";
 
 const BookDetail = () => {
   const router = useRouter();
 
-  // Dummy book data for testing
   const book = {
     id: 1,
     title: "Sample Book 1",
@@ -15,7 +15,7 @@ const BookDetail = () => {
     genre: "Fiction",
     publicationDate: "2022-01-15",
     isFree: true,
-    description:
+    desc:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt risus eget nulla tristique, in feugiat augue tincidunt.",
   };
 
@@ -25,37 +25,33 @@ const BookDetail = () => {
   }
 
   return (
-    <div className="container mx-auto py-6">
-      <Link href="/catalog" className="text-blue-600 hover:underline">
-        Back to Catalog
-      </Link>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <div>
+    <>
+      <Header />
+      <div className="grid grid-col-1 sm:grid-cols-2 gap-2 mt-6">
+        <div className="m-12">
           <Image
             src={book.img}
-            alt={`Cover for ${book.title}`}
+            alt={`Cover for book.title`}
             width="100%"
-            height={400}
+            height={100}
             objectFit="cover"
           />
         </div>
-        <div>
-          <h1 className="text-3xl font-semibold">{book.title}</h1>
+        <div className="text-left flex flex-col gap-2 mt-12 m-10">
+          <h1 className="text-5xl font-semibold mb-2 mt-2">{book.title}</h1>
           <p className="text-gray-600">{book.author}</p>
-          <Spacer y={1} />
-          <Text>{book.description}</Text>
-          <Spacer y={2} />
-          <div className="flex justify-between">
-            <Text>Genre: {book.genre}</Text>
-            <Text>{book.isFree ? "Free" : "Paid"}</Text>
+          <p>Genre: {book.genre}</p>
+          <p>{book.isFree ? "Free" : "Paid"}</p>
+          <p>Published: book.publicationDate</p>
+          <div className="sm:pr-20">
+            <h3 className="text-2xl">Description:</h3>
+            <p>
+              {book.desc}
+            </p>
           </div>
-          <Spacer y={1} />
-          <Text>Published: {book.publicationDate}</Text>
-          <Spacer y={2} />
-          <Button primary>Read Now</Button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

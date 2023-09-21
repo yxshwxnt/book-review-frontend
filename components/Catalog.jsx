@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardBody,
+  CardHeader,
   CardFooter,
   Image,
 } from "@nextui-org/react";
@@ -37,13 +38,13 @@ const Catalog = () => {
       img: "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
       genre: "Non-fiction",
       publicationDate: "2021-07-20",
-      isFree: false,
+      isFree: true,
     },
     {
       id: 4,
       title: "Sample Book 2",
       author: "Author 2",
-      img: "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      img: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/yellow-business-leadership-book-cover-design-template-dce2f5568638ad4643ccb9e725e5d6ff_screen.jpg?ts=1637017516",
       genre: "Non-fiction",
       publicationDate: "2021-07-20",
       isFree: false,
@@ -81,30 +82,49 @@ const Catalog = () => {
         </Button>
       </div>
 
-      <div className="gap-2 grid grid-cols-1 sm:grid-cols-4 m-4">
+      <div className="gap-2 grid grid-cols-2 sm:grid-cols-4 m-4">
         {books.map((item, index) => (
           <Card
             shadow="sm"
             key={index}
             isPressable
             onPress={() => console.log("item pressed")}
+            isFooterBlurred
           >
-            <CardBody className="overflow-visible p-0">
-              <Image
-                isZoomed
-                shadow="sm"
-                radius="lg"
-                width="100%"
-                alt={item.title}
-                className="w-full object-cover h-[140px]"
-                src={item.img}
-              />
-            </CardBody>
-            <CardFooter className="text-small justify-between">
-              <Link href={`/book/${item.id}`} key={item.id}>
-                <b>{item.title}</b>
-                <p className="text-default-500">{item.author}</p>
-              </Link>
+            <CardHeader className="absolute z-10 top-1 flex-col items-start">
+              <p className="text-tiny text-white/60 uppercase font-bold">
+                {item.publicationDate}
+              </p>
+              <h4 className="text-white/90 font-medium text-xl">
+                {item.title}
+              </h4>
+            </CardHeader>
+            <Image
+              isZoomed
+              removeWrapper
+              src={item.img}
+              alt={item.title}
+              className="z-0 w-full h-full object-cover"
+            />
+            <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
+              <div className="flex flex-grow gap-2 items-center">
+                <Image
+                  className="rounded-full w-10 h-11 bg-black"
+                  src={item.img}
+                  alt={item.title}
+                />
+                <div className="grid grid-cols-2">
+                  <Link href={`/book/${item.id}`} key={item.id}>
+                    <p className="text-tiny text-white/60">{item.author}</p>
+                    <p className="text-tiny text-white/60">{item.price}</p>
+                  </Link>
+                </div>
+              </div>
+              <Button radius="full" size="sm">
+                <Link href={`/book/${item.id}`} key={item.id}>
+                  Read Reviews
+                </Link>
+              </Button>
             </CardFooter>
           </Card>
         ))}

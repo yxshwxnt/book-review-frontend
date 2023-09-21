@@ -1,23 +1,57 @@
 import React from "react";
 
-import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Image,
+  Button,
+} from "@nextui-org/react";
 
 export default function App() {
   return (
-    <Card className="py-4">
-      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-        <p className="text-tiny uppercase font-bold">Daily Mix</p>
-        <small className="text-default-500">12 Tracks</small>
-        <h4 className="font-bold text-large">Frontend Radio</h4>
-      </CardHeader>
-      <CardBody className="overflow-visible py-2">
+    <div className="max-w-[900px] gap-2 grid grid-cols-12 grid-rows-2 px-8">
+      <Card
+        shadow="sm"
+        key={index}
+        isPressable
+        onPress={() => console.log("item pressed")}
+        isFooterBlurred
+        className="w-full h-[300px] col-span-12 sm:col-span-7"
+      >
+        <CardHeader className="absolute z-10 top-1 flex-col items-start">
+          <p className="text-tiny text-white/60 uppercase font-bold">
+            {item.publicationDate}
+          </p>
+          <h4 className="text-white/90 font-medium text-xl">Book Tite</h4>
+        </CardHeader>
         <Image
-          alt="Card background"
-          className="object-cover rounded-xl"
-          src="https://images.unsplash.com/photo-1506792006437-256b665541e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cG9wJTIwY29sb3J8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
-          width={270}
+          isZoomed
+          removeWrapper
+          src={item.img}
+          alt={item.title}
+          className="z-0 w-full h-full object-cover"
         />
-      </CardBody>
-    </Card>
+        <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
+          <div className="flex flex-grow gap-2 items-center">
+            <Image
+              className="rounded-full w-10 h-11 bg-black"
+              src={item.img}
+              alt={item.title}
+            />
+            <div className="flex flex-col">
+              <Link href={`/book/${item.id}`} key={item.id}>
+                <p className="text-tiny text-white/60">{item.author}</p>
+                <p className="text-tiny text-white/60">{item.price}</p>
+              </Link>
+            </div>
+          </div>
+          <Button radius="full" size="sm">
+            Read Reviews
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
   );
 }
