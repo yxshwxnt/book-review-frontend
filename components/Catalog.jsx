@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Input,
   Button,
@@ -10,6 +10,7 @@ import {
   Select,
   SelectItem,
 } from "@nextui-org/react";
+import axios from "axios";
 import Link from "next/link";
 
 const Catalog = () => {
@@ -61,8 +62,20 @@ const Catalog = () => {
       publicationDate: "2021-07-20",
       isFree: false,
     },
-    // Add more sample book objects here
   ]);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/get_books");
+        setBooks(response.data);
+        console.log(books);
+      } catch (error) {
+        console.error("Error fetching books:", error);
+      }
+    };
+    // fetchBooks();
+  }, []);
 
   const handleSearch = async () => {
     // Implement fetching books from the backend based on the searchQuery
@@ -83,7 +96,7 @@ const Catalog = () => {
   return (
     <div className="container sm:px-10 py-6">
       <h1 className="text-3xl font-semibold mb-8">Book Catalog</h1>
-      <div className="flex mb-4">
+      <div className="flex mb-4 mx-auto gap-2">
         <Input
           size="lg"
           className="mr-2"

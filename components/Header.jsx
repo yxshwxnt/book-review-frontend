@@ -13,7 +13,7 @@ export default function App() {
   return (
     <Navbar color={'danger'}>
       <NavbarBrand>
-        <p className="font-bold text-inherit">this.Book</p>
+        <Link className="font-bold text-inherit" href="/">this.Book</Link>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
