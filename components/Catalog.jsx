@@ -9,12 +9,86 @@ import {
 } from "@nextui-org/react";
 import axios from "axios";
 import Link from "next/link";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+
+const BookCard = ({ book }) => {
+  const controls = useAnimation();
+  const [ref, inView] = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={controls}
+      variants={{
+        visible: { opacity: 1, scale: 1 },
+        hidden: { opacity: 0, scale: 0.5 },
+      }}
+    >
+      <Card
+        shadow="sm"
+        isPressable
+        onPress={() => console.log("item pressed")}
+        isFooterBlurred
+      >
+        <CardHeader className="absolute z-10 top-1 flex-col items-start">
+          <h4 className="text-white/90 font-medium text-xl">
+            {book?.title || "Unknown Title"}
+          </h4>
+          <p className="text-tiny text-white/60 uppercase font-bold">
+            {book?.publication_date || "Unknown Date"}
+          </p>
+        </CardHeader>
+        <Image
+          isZoomed
+          removeWrapper
+          src={book?.image_url || ""}
+          alt={book?.title || ""}
+          className="z-0 w-full h-full object-cover"
+        />
+        <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
+          <div className="flex flex-grow gap-2 items-center">
+            <Image
+              className="rounded-full w-10 h-11 bg-black"
+              src={book?.image_url || ""}
+              alt={book?.title || ""}
+            />
+            <div className="grid grid-cols-2">
+              <Link href={`/book/${book?._id?.$oid}`} key={book?._id?.$oid}>
+                <p className="text-tiny text-white/60">
+                  {book?.author || "Unknown Author"}
+                </p>
+                <p className="text-tiny text-white/60">
+                  {book.is_free ? "Free" : book.price}
+                </p>
+              </Link>
+            </div>
+          </div>
+          <Button radius="full" size="sm">
+            <Link href={`/book/${book?._id?.$oid}`} key={book?._id?.$oid}>
+              Read Reviews
+            </Link>
+          </Button>
+        </CardFooter>
+      </Card>
+    </motion.div>
+  );
+};
 
 const Catalog = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("");
   const [selectedAuthor, setSelectedAuthor] = useState("");
   const [books, setBooks] = useState([]);
+  const [visibleBooks, setVisibleBooks] = useState(10);
+  const [loadMoreVisible, setLoadMoreVisible] = useState(true);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -36,24 +110,41 @@ const Catalog = () => {
     setSelectedAuthor(author);
   };
 
+  const handleLoadMore = () => {
+    // Increase the number of visible books
+    setVisibleBooks(visibleBooks + 10); // Increase by 12 more books
+  };
+
   const filteredBooksByGenre = selectedGenre
     ? books.filter((book) => book.genre === selectedGenre)
     : books;
 
   const filteredBooksByAuthor = selectedAuthor
-    ? books.filter((book) => book.author.toLowerCase().includes(selectedAuthor.toLowerCase()))
+    ? books.filter((book) =>
+        book.author.toLowerCase().includes(selectedAuthor.toLowerCase())
+      )
     : books;
 
   const searchedBooks = searchQuery
-    ? books.filter((book) =>
-        book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchQuery.toLowerCase())
+    ? books.filter(
+        (book) =>
+          book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          book.author.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : books;
 
   const combinedFilters = searchedBooks
     .filter((book) => !selectedGenre || book.genre === selectedGenre)
-    .filter((book) => !selectedAuthor || book.author.toLowerCase().includes(selectedAuthor.toLowerCase()));
+    .filter(
+      (book) =>
+        !selectedAuthor ||
+        book.author.toLowerCase().includes(selectedAuthor.toLowerCase())
+    );
+
+  // Determine whether to show the "View More" button
+  useEffect(() => {
+    setLoadMoreVisible(visibleBooks < combinedFilters.length);
+  }, [visibleBooks, combinedFilters]);
 
   const uniqueGenres = [...new Set(books.map((book) => book.genre))];
   const uniqueAuthors = [...new Set(books.map((book) => book.author))];
@@ -99,50 +190,18 @@ const Catalog = () => {
       </div>
 
       <div className="gap-2 grid grid-cols-2 sm:grid-cols-5 m-4">
-        {combinedFilters.map((item, index) => (
-          <Card
-            shadow="sm"
-            key={index}
-            isPressable
-            onPress={() => console.log("item pressed")}
-            isFooterBlurred
-          >
-            <CardHeader className="absolute z-10 top-1 flex-col items-start">
-              <p className="text-tiny text-white/60 uppercase font-bold">
-                {item.publicationDate}
-              </p>
-              <h4 className="text-white/90 font-medium text-xl">{item.title}</h4>
-            </CardHeader>
-            <Image
-              isZoomed
-              removeWrapper
-              src={item.image_url}
-              alt={item.title}
-              className="z-0 w-full h-full object-cover"
-            />
-            <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
-              <div className="flex flex-grow gap-2 items-center">
-                <Image
-                  className="rounded-full w-10 h-11 bg-black"
-                  src={item.image_url}
-                  alt={item.title}
-                />
-                <div className="grid grid-cols-2">
-                  <Link href={`/book/${item._id.$oid}`} key={item._id.$oid}>
-                    <p className="text-tiny text-white/60">{item.author}</p>
-                    <p className="text-tiny text-white/60">{item.price}</p>
-                  </Link>
-                </div>
-              </div>
-              <Button radius="full" size="sm">
-                <Link href={`/book/${item._id.$oid}`} key={item._id.$oid}>
-                  Read Reviews
-                </Link>
-              </Button>
-            </CardFooter>
-          </Card>
+        {combinedFilters.slice(0, visibleBooks).map((item, index) => (
+          <BookCard key={index} book={item} />
         ))}
       </div>
+
+      {loadMoreVisible && (
+        <div className="text-center">
+          <Button size="lg" onClick={handleLoadMore}>
+            View More
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

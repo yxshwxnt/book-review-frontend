@@ -21,7 +21,7 @@ const Fullpage = () => (
                 <p className="text-3xl font-semibold text-indigo-600 mb-10">
                   Dive into a World of Books and Reviews
                 </p>
-                <Link href="/catalog">
+                <Link href="/">
                   <Button
                     flat
                     onClick={() => fullpageApi.moveSectionDown()}

@@ -94,10 +94,10 @@ const BookDetail = () => {
           </h1>
           <p className="text-2xl text-gray-400 underline mb-2">{book.author}</p>
           <p>Genre: {book.genre}</p>
-          <p>{book.is_free ? "Free" : "Paid"}</p>
+          <p>{book.is_free ? "Free" : `${book.price} $`}</p>
           <p>Published: {book.publication_date}</p>
-          <div className="sm:pr-20">
-            <h3 className="text-2xl">Description:</h3>
+          <div className="text-wrap">
+            <h3 className="text-xl">Description:</h3>
             <p>{book.description}</p>
           </div>
           <div className="mt-8">
@@ -192,10 +192,10 @@ const BookDetail = () => {
                 ))
               ) : (
                 <div className="border p-4 mb-4 rounded-lg animate-pulse">
-                <h3 className="text-xl font-semibold bg-gray-200 h-8 w-1/4"></h3>
-                <p className="text-gray-200 bg-gray-100 h-6 w-1/2 mt-2"></p>
-                <p className="text-gray-200 bg-gray-100 h-6 w-3/4 mt-2"></p>
-              </div>
+                  <h3 className="text-xl font-semibold bg-gray-200 h-8 w-1/4"></h3>
+                  <p className="text-gray-200 bg-gray-100 h-6 w-1/2 mt-2"></p>
+                  <p className="text-gray-200 bg-gray-100 h-6 w-3/4 mt-2"></p>
+                </div>
               )
             ) : (
               <div className="border p-4 mb-4 rounded-lg animate-pulse">
