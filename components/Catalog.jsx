@@ -93,7 +93,7 @@ const Catalog = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/get_books");
+        const response = await axios.get("https://book-review-backend-2l8f.onrender.com/get_books");
         setBooks(response.data);
       } catch (error) {
         console.error("Error fetching books:", error);
@@ -111,8 +111,7 @@ const Catalog = () => {
   };
 
   const handleLoadMore = () => {
-    // Increase the number of visible books
-    setVisibleBooks(visibleBooks + 10); // Increase by 12 more books
+    setVisibleBooks(visibleBooks + 10);
   };
 
   const filteredBooksByGenre = selectedGenre
@@ -141,7 +140,6 @@ const Catalog = () => {
         book.author.toLowerCase().includes(selectedAuthor.toLowerCase())
     );
 
-  // Determine whether to show the "View More" button
   useEffect(() => {
     setLoadMoreVisible(visibleBooks < combinedFilters.length);
   }, [visibleBooks, combinedFilters]);
@@ -150,59 +148,61 @@ const Catalog = () => {
   const uniqueAuthors = [...new Set(books.map((book) => book.author))];
 
   return (
-    <div className="container sm:px-10 py-6">
-      <h1 className="text-3xl font-semibold mb-8">Book Catalog</h1>
-      <div className="flex mb-4 mx-auto gap-2">
-        <Input
-          size="lg"
-          className="mr-2"
-          placeholder="Search books by title, author, or genre"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <Button className="mr-2" onClick={() => setSearchQuery("")}>
-          Clear
-        </Button>
-        <select
-          value={selectedGenre}
-          onChange={(e) => handleGenreChange(e.target.value)}
-          className="rounded-lg p-2 border border-gray-300 focus:outline-none focus:border-blue-400"
-        >
-          <option value="">All Genres</option>
-          {uniqueGenres.map((genre) => (
-            <option key={genre} value={genre}>
-              {genre}
-            </option>
-          ))}
-        </select>
-        <select
-          value={selectedAuthor}
-          onChange={(e) => handleAuthorChange(e.target.value)}
-          className="rounded-lg p-2 border border-gray-300 focus:outline-none focus:border-blue-400"
-        >
-          <option value="">All Authors</option>
-          {uniqueAuthors.map((author) => (
-            <option key={author} value={author}>
-              {author}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="gap-2 grid grid-cols-2 sm:grid-cols-5 m-4">
-        {combinedFilters.slice(0, visibleBooks).map((item, index) => (
-          <BookCard key={index} book={item} />
-        ))}
-      </div>
-
-      {loadMoreVisible && (
-        <div className="text-center">
-          <Button size="lg" onClick={handleLoadMore}>
-            View More
+    <>
+      <div className="container sm:px-10 py-6">
+        <h1 className="text-3xl font-semibold mb-8">Book Catalog</h1>
+        <div className="flex mb-8 mx-auto gap-2">
+          <Input
+            size="lg"
+            className="mr-2"
+            placeholder="Search books by title, author, or genre"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <Button className="mr-2" onClick={() => setSearchQuery("")}>
+            Clear
           </Button>
+          <select
+            value={selectedGenre}
+            onChange={(e) => handleGenreChange(e.target.value)}
+            className="rounded-lg p-2 border border-gray-300 focus:outline-none focus:border-blue-400"
+          >
+            <option value="">All Genres</option>
+            {uniqueGenres.map((genre) => (
+              <option key={genre} value={genre}>
+                {genre}
+              </option>
+            ))}
+          </select>
+          <select
+            value={selectedAuthor}
+            onChange={(e) => handleAuthorChange(e.target.value)}
+            className="rounded-lg p-2 border border-gray-300 focus:outline-none focus:border-blue-400"
+          >
+            <option value="">All Authors</option>
+            {uniqueAuthors.map((author) => (
+              <option key={author} value={author}>
+                {author}
+              </option>
+            ))}
+          </select>
         </div>
-      )}
-    </div>
+
+        <div className="gap-2 grid grid-cols-2 sm:grid-cols-5 m-4">
+          {combinedFilters.slice(0, visibleBooks).map((item, index) => (
+            <BookCard key={index} book={item} />
+          ))}
+        </div>
+
+        {loadMoreVisible && (
+          <div className="text-center">
+            <Button size="lg" onClick={handleLoadMore}>
+              View More
+            </Button>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

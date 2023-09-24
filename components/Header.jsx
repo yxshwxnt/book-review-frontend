@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   Navbar,
   NavbarBrand,
@@ -11,34 +10,28 @@ import {
 
 export default function App() {
   return (
-    <Navbar color={'danger'}>
+    <Navbar color={"danger"}>
       <NavbarBrand>
-        <Link className="font-bold text-inherit" href="/">this.Book</Link>
+        <Link className="font-bold text-inherit" href="/Books">
+          this.Book
+        </Link>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link color="foreground" href="#">
-            Features
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link href="#" aria-current="page">
-            Customers
+          <Link color="foreground" href="/Books">
+            Home
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="#">
-            Integrations
+          <Link href="/" color="foreground" aria-current="page">
+            Landing Page
           </Link>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Sign Up
+          <Button as={Link} color="primary" href="/AddBook" variant="flat">
+            Add New Book
           </Button>
         </NavbarItem>
       </NavbarContent>

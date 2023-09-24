@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Image,
-  Text,
   Button,
   Spacer,
   Modal,
@@ -10,11 +9,11 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Skeleton,
   useDisclosure,
 } from "@nextui-org/react";
-import { useRouter } from "next/router";
 import Header from "@/components/Header";
+import Head from "next/head";
+import { useRouter } from "next/router";
 
 const BookDetail = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -29,7 +28,7 @@ const BookDetail = () => {
     try {
       const bookId = router.query.id;
       const response = await axios.get(
-        `http://localhost:5000/get_book/${bookId}`
+        `https://book-review-backend-2l8f.onrender.com/get_book/${bookId}`
       );
       setBook(response.data);
       const bookDetails = response.data;
@@ -55,7 +54,7 @@ const BookDetail = () => {
         comment: comment,
       };
       await axios.post(
-        `http://localhost:5000/add_review/${bookId}`,
+        `https://book-review-backend-2l8f.onrender.com/add_review/${bookId}`,
         reviewData
       );
       fetchBookDetails();
@@ -77,6 +76,9 @@ const BookDetail = () => {
 
   return (
     <>
+      <Head>
+        <title>{book.title} - Book Details</title>
+      </Head>
       <Header />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
         <div className="m-12">
