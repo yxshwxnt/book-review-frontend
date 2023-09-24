@@ -15,7 +15,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const AddBook = () => {
   const firebaseConfig = {
-    apiKey: "AIzaSyAb1jvQGQjVZouy3GQ2xRicVbjeKQxHo7k",
+    apiKey: process.env.API_KEY,
     authDomain: "book-review-16afb.firebaseapp.com",
     projectId: "book-review-16afb",
     storageBucket: "book-review-16afb.appspot.com",
