@@ -12,6 +12,7 @@ import Header from "@/components/Header";
 import { useRouter } from "next/router";
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+require("dotenv").config();
 
 const AddBook = () => {
   const firebaseConfig = {
@@ -82,7 +83,7 @@ const AddBook = () => {
         image_url: "",
         reviews: [],
       });
-      alert('Added Book')
+      alert("Added Book");
     } catch (error) {
       console.error("Error adding a new book:", error);
     }
