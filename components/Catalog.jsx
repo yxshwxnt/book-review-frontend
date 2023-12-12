@@ -100,7 +100,7 @@ const Catalog = () => {
       }
     };
     fetchBooks();
-  }, []);
+  }, [books]);
 
   const handleGenreChange = (genre) => {
     setSelectedGenre(genre);
